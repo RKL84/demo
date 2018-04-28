@@ -41,7 +41,7 @@ namespace Acme.RemoteFlights.Core.Commands
             {
                 var innerHandler = (ICommandHandler<TCommand>)
                     _scope.ResolveOptional(typeof(ICommandHandler<TCommand>));
-                
+
                 if (innerHandler != null)
                 {
                     command.Validate();
@@ -55,7 +55,7 @@ namespace Acme.RemoteFlights.Core.Commands
                     else
                     {
                         return CommandResult.FromValidationErrors(command.ValidationErrorMessges);
-                        
+
                     }
                 }
 
@@ -79,10 +79,8 @@ namespace Acme.RemoteFlights.Core.Commands
             }
 
             var content = result.Content;
-            return  new CommandResult(result.StatusCode, content);
+            return new CommandResult(result.StatusCode, content);
         }
-
-  
 
         public void ApplyChanges()
         {

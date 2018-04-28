@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Acme.RemoteFlights.Core.Controllers
+namespace Acme.RemoteFlights.Core
 {
     public abstract class BaseApiController : Controller
     {
@@ -31,7 +31,5 @@ namespace Acme.RemoteFlights.Core.Controllers
             return delayedResult ?? result;
 
         }
-
-
     }
 }

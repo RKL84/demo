@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Acme.RemoteFlights.Core.Commands
 {
@@ -12,7 +10,6 @@ namespace Acme.RemoteFlights.Core.Commands
         public bool IsValid => _validationPerformed && !_errors.Any();
 
         public IEnumerable<string> ValidationErrorMessges => _errors;
-
 
         protected CommandBase()
         {
