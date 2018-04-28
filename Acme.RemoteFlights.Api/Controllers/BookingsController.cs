@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Acme.RemoteFlights.Api.ApiModels;
+using Acme.RemoteFlights.Api.Commands;
 using Acme.RemoteFlights.Api.Requests;
 using Acme.RemoteFlights.Core;
 using Acme.RemoteFlights.Core.Commands;
@@ -41,6 +42,14 @@ namespace Acme.RemoteFlights.Api.Controllers
             var apiModelResultCollection = resultCollection.ToList()
                 .Select(i => AvailableFlightInfoApiModel.FromFlightSchedule<AvailableFlightInfoApiModel>(i));
             return Ok(resultCollection);
+        }
+
+        [HttpPost()]
+        public IActionResult CreateBooking([FromBody]CreateBookingRequest data)
+        {
+            if (data == null)
+                return BadRequest();
+            return ProcessCommand(new CreateBookingCommand(data));
         }
     }
 }
