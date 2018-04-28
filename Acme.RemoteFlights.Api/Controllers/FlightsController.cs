@@ -10,11 +10,11 @@ using Acme.RemoteFlights.Api.ApiModels;
 namespace Acme.RemoteFlights.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class FlightController : BaseApiController
+    public class FlightsController : BaseApiController
     {
         private readonly IFlightQueries _flightQueries;
 
-        public FlightController(ICommandBus bus, IFlightQueries flightQueries) : base(bus)
+        public FlightsController(ICommandBus bus, IFlightQueries flightQueries) : base(bus)
         {
             _flightQueries = flightQueries;
         }
@@ -27,6 +27,15 @@ namespace Acme.RemoteFlights.Api.Controllers
                 return BadRequest();
             var resultCollection = await _flightQueries.GetAllFlights(request.FlightNo, request.ArrivalCity,
                 request.DepartureCity, request.ArrivalTime, request.DepartureTime, request.PassengerCapacity);
+            var apiModelResultCollection = resultCollection.ToList().Select(i => FlightApiModel.FromFlightSchedule<FlightApiModel>(i));
+            return Ok(apiModelResultCollection);
+        }
+
+        // GET api/flight
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            var resultCollection = await _flightQueries.GetAllFlights(id);
             var apiModelResultCollection = resultCollection.ToList().Select(i => FlightApiModel.FromFlightSchedule<FlightApiModel>(i));
             return Ok(apiModelResultCollection);
         }

@@ -7,6 +7,7 @@ namespace Acme.RemoteFlights.Core.Queries
 {
     public interface IFlightQueries
     {
+        Task<IEnumerable<FlightSchedule>> GetAllFlights(string flightNo);
         Task<IEnumerable<FlightSchedule>> GetAllFlights(string flightNo, string arrivalCity, string departureCity,
             DateTime? arrivalTime, DateTime? departureTime, int? passengerCapacity);
     }

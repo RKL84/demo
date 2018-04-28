@@ -19,7 +19,7 @@ namespace Acme.RemoteFlights.Core.Queries
         }
 
         public async Task<IEnumerable<Booking>> GetAllBookings(string passengerName, string departureCity,
-            string arrivalCity, DateTime travelDate, string flightNo)
+            string arrivalCity, DateTime? travelDate, string flightNo)
         {
             var query = (from bookingInfo in _ctx.Booking
                          select bookingInfo);
@@ -42,6 +42,13 @@ namespace Acme.RemoteFlights.Core.Queries
             if (!string.IsNullOrEmpty(passengerName))
             {
                 query = query.Where(a => a.User.Name.ToLower() == passengerName.ToLower());
+            }
+
+            if (travelDate.HasValue)
+            {
+                query = query.Where(a => travelDate.Value.Year == a.FlightSchedule.DepartureTime.Year
+                            && travelDate.Value.Month == a.FlightSchedule.DepartureTime.Month
+                            && travelDate.Value.Day == a.FlightSchedule.DepartureTime.Day);
             }
 
             return await query.Include(a => a.FlightSchedule).Include(a => a.FlightSchedule.Flight).Include(a => a.User).ToListAsync();

@@ -32,7 +32,7 @@ namespace Acme.RemoteFlights.Api.Controllers
         }
 
         [HttpGet("availibility/")]
-        public async Task<IActionResult> CheckAvailibility([FromQuery] TicketAvailbilitySearchRequest request)
+        public async Task<IActionResult> CheckAvailibility([FromQuery] FlightAvailbilitySearchRequest request)
         {
             if (request == null)
                 return BadRequest();

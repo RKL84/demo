@@ -2,7 +2,7 @@
 
 namespace Acme.RemoteFlights.Api.Requests
 {
-    public class TicketAvailbilitySearchRequest 
+    public class FlightAvailbilitySearchRequest 
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
