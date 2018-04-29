@@ -1,4 +1,9 @@
-#### Running & Debugging Acme.RemoteFlights.Api Locally ####
+### Live Demo _(Microsoft Azure)_ ###
+
+* **Acme.RemoteFlights.Api** <sup>_(ASP.NET Core Web API, Entity Framework Core,.NET Standard)</sup>_  
+  [http://acmeremoteflightsapi20180429.azurewebsites.net/api/flights](http://acmeremoteflightsapi20180429.azurewebsites.net/api/flights)
+  
+  #### Running & Debugging Acme.RemoteFlights.Api Locally ####
 * Clone this repo: https://github.com/RKL84/demo.git 
 * Acme.RemoteFlights.Api *<sup>(ASP.NET Core Web API)</sup>*
   * Restore *([Acme.RemoteFlights.Api.bacpac](https://github.com/RKL84/demo/blob/master/Acme.RemoteFlights.Database/sql))* Acme.RemoteFlights SQL Database
