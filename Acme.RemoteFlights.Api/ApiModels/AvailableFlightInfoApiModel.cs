@@ -11,6 +11,7 @@ namespace Acme.RemoteFlights.Api.ApiModels
         public string ArrivalCity { get; set; }
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
+        public int AvailableSeats { get; set; }
 
         public static TModel FromFlightSchedule<TModel>(AvailableFlightInfo data) where
      TModel : AvailableFlightInfoApiModel, new()
@@ -22,6 +23,7 @@ namespace Acme.RemoteFlights.Api.ApiModels
             model.ArrivalCity = data.ArrivalCity;
             model.DepartureTime = data.DepartureTime;
             model.ArrivalTime = data.ArrivalTime;
+            model.AvailableSeats = data.AvailableSeats;
             return model;
         }
     }

@@ -1,20 +1,19 @@
-﻿CREATE PROCEDURE [dbo].[sp_GetAvailableFlights] 
-@StartDate datetime = NULL ,
-@EndDate datetime  = NULL,
-@NumberOfPassengers int  = 0
+﻿CREATE PROCEDURE [dbo].[sp_GetAvailableFlightsByScheduleId]
+@ScheduleId bigint,
+@NumberOfPassengers int
 
 AS
 
 BEGIN
 
-  SELECT DISTINCT
-	A.ScheduleId,
+  SELECT
+    A.ScheduleId,
     A.ArrivalCity,
     A.DepartureCity,
     A.ArrivalTime,
     A.DepartureTime,
     A.FlightCode,
-    A.PassengerCapacity - ISNULL(B.BookingCount,0) AS 'AvailableSeats'
+	A.PassengerCapacity - ISNULL(B.BookingCount,0) AS 'AvailableSeats'
   FROM (SELECT
     FS.Id AS 'ScheduleId',
     FS.ArrivalCity,
@@ -25,17 +24,15 @@ BEGIN
     F.PassengerCapacity
   FROM FlightSchedule FS
   INNER JOIN Flight F
-    ON FS.FlightId = F.Id) AS A
+    ON FS.FlightId = F.Id 
+	WHERE FS.Id = @ScheduleId) AS A
 
-  LEFT OUTER JOIN (SELECT
+  LEFT OUTER  JOIN (SELECT
     ScheduleId,
     COUNT(*) AS 'BookingCount'
   FROM Booking
   GROUP BY ScheduleId) AS B
     ON A.ScheduleId = B.ScheduleId
-  WHERE
-  CAST(DepartureTime AS DATE) = CAST(ISNULL(@StartDate,DepartureTime) AS DATE)
-  AND CAST(ArrivalTime AS DATE) = CAST(ISNULL(@EndDate,ArrivalTime) AS DATE)
   AND A.PassengerCapacity - ISNULL(B.BookingCount,0) - @NumberOfPassengers >= 0
 
 END

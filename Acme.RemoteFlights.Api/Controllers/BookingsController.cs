@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Acme.RemoteFlights.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class BookingController : BaseApiController
+    public class BookingsController : BaseApiController
     {
         private IBookingQueries _bookingQueries;
 
-        public BookingController(ICommandBus bus, IBookingQueries bookingQueries) : base(bus)
+        public BookingsController(ICommandBus bus, IBookingQueries bookingQueries) : base(bus)
         {
             _bookingQueries = bookingQueries;
         }
@@ -45,7 +45,7 @@ namespace Acme.RemoteFlights.Api.Controllers
         }
 
         [HttpPost()]
-        public IActionResult CreateBooking([FromBody]CreateBookingRequest data)
+        public IActionResult Post([FromQuery]CreateBookingRequest data)
         {
             if (data == null)
                 return BadRequest();

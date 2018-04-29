@@ -54,18 +54,49 @@ namespace Acme.RemoteFlights.Core.Queries
             return await query.Include(a => a.FlightSchedule).Include(a => a.FlightSchedule.Flight).Include(a => a.User).ToListAsync();
         }
 
-        public async Task<IEnumerable<AvailableFlightInfo>> GetAvailableFlights(DateTime startDate, DateTime endDate, int numberOfPassengers)
+        public async Task<IEnumerable<AvailableFlightInfo>> GetAvailableFlights(DateTime? startDate, DateTime? endDate, int numberOfPassengers)
         {
-            var startDateParameter = new SqlParameter("@StartDate", DateTime.Now);
-            var endDateParameter = new SqlParameter("@EndDate", DateTime.Now);
-            var numberOfPassengersParameter = new SqlParameter("@NumberOfPassengers", numberOfPassengers);
             var result = new List<AvailableFlightInfo>();
             using (var command = _ctx.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = $"sp_GetAvailableFlights";
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.Add(startDateParameter);
-                command.Parameters.Add(endDateParameter);
+                if (startDate.HasValue)
+                    command.Parameters.Add(new SqlParameter("@StartDate", startDate.Value));
+                if (endDate.HasValue)
+                    command.Parameters.Add(new SqlParameter("@EndDate", endDate.Value));
+                command.Parameters.Add(new SqlParameter("@NumberOfPassengers", numberOfPassengers));
+                _ctx.Database.OpenConnection();
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (reader.Read())
+                    {
+                        var data = new AvailableFlightInfo();
+                        data.ScheduleId = (Int64)reader["ScheduleId"];
+                        data.ArrivalCity = (string)reader["ArrivalCity"];
+                        data.DepartureCity = (string)reader["DepartureCity"];
+                        data.ArrivalTime = (DateTime)reader["ArrivalTime"];
+                        data.DepartureTime = (DateTime)reader["DepartureTime"];
+                        data.FlightCode = (string)reader["FlightCode"];
+                        data.AvailableSeats = (int)reader["AvailableSeats"];
+                        result.Add(data);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<AvailableFlightInfo>> GetAvailableFlights(Int64 scheduleId, int numberOfPassengers)
+        {
+            var scheduleIdParameter = new SqlParameter("@ScheduleId", scheduleId);
+            var numberOfPassengersParameter = new SqlParameter("@NumberOfPassengers", numberOfPassengers);
+            var result = new List<AvailableFlightInfo>();
+            using (var command = _ctx.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = $"sp_GetAvailableFlightsByScheduleId";
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.Add(scheduleIdParameter);
                 command.Parameters.Add(numberOfPassengersParameter);
                 _ctx.Database.OpenConnection();
                 using (var reader = await command.ExecuteReaderAsync())
@@ -79,6 +110,7 @@ namespace Acme.RemoteFlights.Core.Queries
                         data.ArrivalTime = (DateTime)reader["ArrivalTime"];
                         data.DepartureTime = (DateTime)reader["DepartureTime"];
                         data.FlightCode = (string)reader["FlightCode"];
+                        data.AvailableSeats = (int)reader["AvailableSeats"];
                         result.Add(data);
                     }
                 }

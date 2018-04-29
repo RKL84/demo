@@ -70,6 +70,7 @@
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Tables\Booking.sql" />
     <Build Include="dbo\Stored Procedures\sp_GetAvailableFlights.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetAvailableFlightsByScheduleId.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
