@@ -6,7 +6,7 @@
   #### Running & Debugging Acme.RemoteFlights.Api Locally ####
 * Clone this repo: https://github.com/RKL84/demo.git 
 * Acme.RemoteFlights.Api *<sup>(ASP.NET Core Web API)</sup>*
-  * Restore *([Acme.RemoteFlights.Api.bacpac](https://github.com/RKL84/demo/blob/master/Acme.RemoteFlights.Database/sql))* Acme.RemoteFlights SQL Database
+  * Restore *([Acme.RemoteFlights.Api.bacpac](https://github.com/RKL84/demo/blob/master/Acme.RemoteFlights.Database/Sql))* Acme.RemoteFlights SQL Database
   * Install lastest .NET Core SDK **after** Visual Studio 2017 installed
   * Open Acme.RemoteFlights.sln Solution in Visual Studio 2017
   * Set Acme.RemoteFlights.Api as Startup Project for the Solution
